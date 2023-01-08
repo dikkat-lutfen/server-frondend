@@ -1,4 +1,4 @@
-import mongoose from "./connections.js"
+const mongoose = require("./connection.js")
 
 
 const UserSchema = new mongoose.Schema({

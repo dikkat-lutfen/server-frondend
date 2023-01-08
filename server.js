@@ -1,10 +1,13 @@
 const express = require('express')
 const app = express()
+const User = require ("./modules/userModule")
+const Gallery = require ("./modules/galleryModule")
 const port =3500;
-const User = require ("/modules/userModule.js")
-const Gallery = require ("/modules/galleryModule.js")
+const bodyParser = require('body-parser')
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
+app.use(bodyParser.json())
 
 
 app.post("/signup", async (req,res)=>{
@@ -28,11 +31,26 @@ app.post("/signup", async (req,res)=>{
    }
 })
 
-app.post("/signup", async (req,res)=>{
-    
+app.post("/login", async (req,res)=>{
+   // first we will check if the user exist
+    const user = await User.findOne({username : req.body.username});
+    // ıf user exist we should compare the password with bcrypt.compare method
+    if(user){
+        bcrypt.compare(req.body.password, user.password, function (err, result){
+            if(result){
+              const token =  jwt.sign({id: user.id},"secret_key", /*exparatin date*/ )
+              res.send({token})
+            }else{
+                res.send({message:"wrong password"})
+            }
+        }) // first password in req.body second  password in database
+
+    }else{
+        res.send({message: "the user does not exist or wrong username"})
+    }
 })
 
-app.post("/signup", async (req,res)=>{
+app.post("/verify", async (req,res)=>{
     
 })
 
