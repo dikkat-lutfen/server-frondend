@@ -3,7 +3,7 @@ const mongoose = require("./connection.js")
 const GallerySchema = new mongoose.Schema({
     
     imageUrl: String,
-    UserId :String,
+    userId :String,
 
   });
 

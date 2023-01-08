@@ -6,6 +6,12 @@ const port =3500;
 const bodyParser = require('body-parser')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
+
+
+app.use(cors({
+    origin:"*",
+}))
 
 app.use(bodyParser.json())
 
@@ -61,6 +67,23 @@ app.post("/verify", async (req,res)=>{
        }
     })
 })
+
+app.post("/image", async(req,res)=>{
+    const newImage =  new Gallery({imageUrl:req.body.imageUrl, userId : req.body.userId })
+    await newImage.save();
+    res.send({message:"new image saved to database"})
+})
+
+app.get("/image/:id", async(req,res)=>{
+   const images = await Gallery.find({userId :req.params.id})
+   res.send({list : images})
+})
+
+app.delete("/image/:id", async (req,res)=>{
+    await Gallery.deleteOne({_id: req.params.id})
+    res.send({message: "image is deleted"})
+})
+
 
 app.listen(port,()=>{
     console.log("app is running port :"+ port)
