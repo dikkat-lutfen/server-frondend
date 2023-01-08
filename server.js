@@ -51,7 +51,15 @@ app.post("/login", async (req,res)=>{
 })
 
 app.post("/verify", async (req,res)=>{
-    
+    // it will check if token valid or not
+    jwt.verify(req.body.token,"secret_key", async (err, payload)=> {
+       if(payload){
+        const user = await User.findOne({_id:payload.id})
+        res.send(user)
+       }else{
+        res.send({message:"session expired"})
+       }
+    })
 })
 
 app.listen(port,()=>{
