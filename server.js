@@ -45,7 +45,7 @@ app.post("/login", async (req,res)=>{
         bcrypt.compare(req.body.password, user.password, function (err, result){
             if(result){
               const token =  jwt.sign({id: user.id},"secret_key", /*exparatin date*/ )
-              res.send({token})
+              res.send({token}) 
             }else{
                 res.send({message:"wrong password"})
             }
@@ -59,6 +59,7 @@ app.post("/login", async (req,res)=>{
 app.post("/verify", async (req,res)=>{
     // it will check if token valid or not
     jwt.verify(req.body.token,"secret_key", async (err, payload)=> {
+        console.log(payload)
        if(payload){
         const user = await User.findOne({_id:payload.id})
         res.send(user)
