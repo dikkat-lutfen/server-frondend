@@ -17,7 +17,7 @@ function Login (){
 
    function login (){
       axios
-      .post("http://localhost:3500/login", {username, password})
+      .post("http://localhost:3500/login/", {username, password})
       .then(({data})=>{
         console.log(data)
         if(data.token ){ // is saved we will go directly to login page so we need to import useNavigate react router dom

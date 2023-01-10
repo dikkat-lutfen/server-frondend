@@ -59,7 +59,7 @@ app.post("/login", async (req,res)=>{
 app.post("/verify", async (req,res)=>{
     // it will check if token valid or not
     jwt.verify(req.body.token,"secret_key", async (err, payload)=> {
-        console.log(payload)
+       // console.log(payload)
        if(payload){
         const user = await User.findOne({_id:payload.id})
         res.send(user)
@@ -81,7 +81,9 @@ app.get("/image/:id", async(req,res)=>{
 })
 
 app.delete("/image/:id", async (req,res)=>{
-    await Gallery.deleteOne({_id: req.params.id})
+    console.log( req.params.id)
+    await Gallery.findOneAndDelete({_id: req.params.id})
+    
     res.send({message: "image is deleted"})
 })
 
